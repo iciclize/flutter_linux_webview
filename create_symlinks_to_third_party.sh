@@ -31,9 +31,9 @@ cd "$(dirname "$0")" || exit
 #      │   └── dir2/
 #      │       ├── file4
 #      │       └── file5  # specified in $files_to_link
-#      │ ================ (begin) symlinks and directories are created as follows ===============
 #      ├── linux/
-#      │   └── third_party/  # missing directories are created
+#      │   └── third_party/  # must exist
+#      │ ================ (begin) symlinks and directories are created as follows ===============
 #      │       └── some_oss/  # $dst_root_dir
 #      │           ├── file1 (-> ../../../third_party_base/some_oss/file1)
 #      │           ├── dir1/
@@ -42,7 +42,7 @@ cd "$(dirname "$0")" || exit
 #      │               └── file5 (-> ../../../../third_party_base/some_oss/dir2/file5)
 #      │ ================ (end) ================
 #      └── ...
-copy_directory_structure_and_create_symlinks_for_files() {
+function copy_directory_structure_and_create_symlinks_for_files() {
     local src_root_dir;  src_root_dir="$PROJECT_ROOT_DIR"/"$1"
     local files_to_link;  files_to_link="$2"
     local dst_root_dir;  dst_root_dir="$PROJECT_ROOT_DIR"/"$3"
@@ -69,26 +69,33 @@ copy_directory_structure_and_create_symlinks_for_files() {
     }
 
     for file_rel in $files_to_link; do
-        local abs_src_file_path
-        local abs_dst_file_path
-        local dst_file_dirname
-        local rel_path_for_symlink
-        abs_src_file_path="$(realpath "$src_root_dir/$file_rel")"
-        abs_dst_file_path="$(realpath --canonicalize-missing "$dst_root_dir/$file_rel")"
-        dst_file_dirname="$(dirname "$abs_dst_file_path")"
-        rel_path_for_symlink=$(realpath "$abs_src_file_path" --canonicalize-missing --relative-to="$dst_file_dirname")
-
-        mkdir -p "$(dirname "$abs_dst_file_path")" || {
-            echo "Error: Failed to create directory '$dst_file_dirname'."
-            exit 1
-        }
-        ln -sv "$rel_path_for_symlink" "$abs_dst_file_path" || {
-            echo "Error: Failed to create symbolic link."
-            echo "File: '$abs_src_file_path' could not be symbolically linked to '$abs_dst_file_path'."
-            exit 1
-        }
+      _create_symlink_with_mkdir "$src_root_dir" "$file_rel" "$dst_root_dir" || {
+        exit 1
+      }
     done
 }
+
+function _create_symlink_with_mkdir() {
+    local src_root_dir;  src_root_dir="$1"
+    local rel_filepath;  rel_filepath="$2"
+    local dst_root_dir;  dst_root_dir="$3"
+
+    local abs_src_file_path;  abs_src_file_path="$(realpath "$src_root_dir/$rel_filepath")"
+    local abs_dst_file_path;  abs_dst_file_path="$(realpath --canonicalize-missing "$dst_root_dir/$rel_filepath")"
+    local dst_file_dirname;  dst_file_dirname="$(dirname "$abs_dst_file_path")"
+    local rel_path_for_symlink;  rel_path_for_symlink=$(realpath "$abs_src_file_path" --canonicalize-missing --relative-to="$dst_file_dirname")
+
+    mkdir -p "$(dirname "$abs_dst_file_path")" || {
+        echo "Error: Failed to create directory '$dst_file_dirname'."
+        exit 1
+    }
+    ln -sv "$rel_path_for_symlink" "$abs_dst_file_path" || {
+        echo "Error: Failed to create symbolic link."
+        echo "File: '$abs_src_file_path' could not be symbolically linked to '$abs_dst_file_path'."
+        exit 1
+    }
+}
+
 
 # $1: target_dir (example: "lib/src/third_party")
 #
@@ -108,6 +115,7 @@ function create_third_party_dir() {
   fi
 
   mkdir -p "$target_dir"
+  _create_symlink_with_mkdir "third_party_base" "README.md" "$target_dir" 
 }
 
 ###

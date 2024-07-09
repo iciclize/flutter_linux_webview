@@ -78,6 +78,8 @@ The native implementation of the plugin uses CEF (Chromium Embedded Framework) a
 
 ### (TODO: UPDATE ME) Separate executables layout
 
+TODO: Sub-process source files are no longer symlinked. Instead, they are built out-of-source.
+
 CEF runs using a browser process and sub-processes. This plugin executes the browser using the separate sub-process executable layout (ref. https://bitbucket.org/chromiumembedded/cef/wiki/GeneralUsage#markdown-header-separate-sub-process-executable).
 
 The sub-process executable is built with the name `flutter_webview_subprocess`, bundled with the Flutter app, and launched as needed.
@@ -116,7 +118,7 @@ First of all, this directory (`linux/`) is added using `add_subdirectory()` duri
     - This setting is necessary because the plugin will hang in the `CefInitialize()` function if the Flutter app executable is not linked to `libcef.so`.
 2. Downloads and extracts the CEF binary distribution (cef_binary_96.0.18+gfe551e4+chromium-96.0.4664.110_linux64_minimal) in the `linux/` directory.
 3. Modifies the CEF binary distribution to prepare for building the sub-process executable.
-    1. Creates a directory `linux/<CEF binary distrib dir>/tests/flutter_webview_subprocess` and creates symbolic links to the sub-process source code files in it:
+    1. TODO: Sub-process source files are no longer symlinked. Instead, they are built out-of-source. ~~Creates a directory `linux/<CEF binary distrib dir>/tests/flutter_webview_subprocess` and creates symbolic links to the sub-process source code files in it:~~
         - `linux/<CEF binary distrib dir>/tests/flutter_webview_subprocess/*.{cc,h}` -> `linux/subprocess/src/*.{cc,h}`
         - `linux/<CEF binary distirb dir>/tests/flutter_webview_subprocess/CMakeLists.txt` -> `linux/subprocess/src/CMakeLists_subprocess_project.txt`
     2. Applies `linux/subprocess/cef_distrib_patch/build_flutter_webview_subprocess.patch` to `linux/<CEF binary distrib dir>/CMakeLists.txt` to enable building for the `tests/flutter_webview_subprocess`.

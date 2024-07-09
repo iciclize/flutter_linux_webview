@@ -85,7 +85,7 @@ set(CEFSIMPLE_SRCS
 #
 
 # Target executable names.
-set(CEF_TARGET "flutter_webview_subprocess")
+set(CEF_TARGET "${WEBVIEW_SUBPROCESS_PROJECT_NAME}")
 # Logical target used to link the libcef library.
 ADD_LOGICAL_TARGET("libcef_lib" "${CEF_LIB_DEBUG}" "${CEF_LIB_RELEASE}")
 

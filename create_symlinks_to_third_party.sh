@@ -133,6 +133,7 @@ copy_directory_structure_and_create_symlinks_for_files "$param_src_root_dir"  "$
 param_src_root_dir="third_party_base/flutter_engine"
 param_dst_root_dir="lib/src/third_party/flutter_engine"
 param_files_to_link="README.webview
+LICENSE
 shell/platform/linux/native_key_code.dart
 "
 copy_directory_structure_and_create_symlinks_for_files "$param_src_root_dir"  "$param_files_to_link" "$param_dst_root_dir"
@@ -143,6 +144,7 @@ copy_directory_structure_and_create_symlinks_for_files "$param_src_root_dir"  "$
 param_src_root_dir="third_party_base/webview_flutter_android"
 param_dst_root_dir="lib/src/third_party/webview_flutter_android"
 param_files_to_link="README.webview
+LICENSE
 lib/src/instance_manager.dart
 lib/webview_linux_cookie_manager.dart
 "

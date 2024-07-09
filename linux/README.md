@@ -76,7 +76,7 @@ The native implementation of the plugin uses CEF (Chromium Embedded Framework) a
         * ref. https://github.com/flutter/flutter/pull/121378 + https://github.com/flutter/engine/pull/40033#discussion_r1200216166
 * `FlutterWebviewController::ShutdownCef()` requests all running browsers to exit and waits for all browsers and the CEF UI thread to exit.
 
-### Separate executables layout
+### (TODO: UPDATE ME) Separate executables layout
 
 CEF runs using a browser process and sub-processes. This plugin executes the browser using the separate sub-process executable layout (ref. https://bitbucket.org/chromiumembedded/cef/wiki/GeneralUsage#markdown-header-separate-sub-process-executable).
 
@@ -105,7 +105,7 @@ The source files for the sub-process executable are located in `linux/subprocess
 
 During the plugin building process, the CEF binary distribution is downloaded and extracted, and the sub-process source files are symlinked in `linux/<CEF binary distribution directory>/tests/flutter_webview_subprocess/`.
 
-## The build process for the plugin
+## (TODO: UPDATE ME) The build process for the plugin
 
 The build process is described in `linux/CMakeLists.txt` and is outlined below.
 

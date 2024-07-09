@@ -22,7 +22,7 @@
 +  ### add_subdirectory(tests/cefsimple)
 +  ### add_subdirectory(tests/gtest)
 +  ### add_subdirectory(tests/ceftests)
-+  add_subdirectory(tests/flutter_webview_subprocess)
++  add_subdirectory("../subprocess/src" "${WEBVIEW_SUBPROCESS_PROJECT_NAME}")
  endif()
  
  if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tests/cefclient")

@@ -1,3 +1,5 @@
+`flutter_linux_webview` incorporates materials from third-party software.
+
 # `third_party/` directories
 
 Third-party source code is gathered under several directories named third_party/ in the repository.

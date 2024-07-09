@@ -118,6 +118,51 @@ function create_third_party_dir() {
   _create_symlink_with_mkdir "third_party_base" "README.md" "$target_dir" 
 }
 
+#
+# Generates ThirdPartyNotices.txt from a list of README.webview
+#
+# $1: the list of README.webview file paths
+function generate_third_party_notices_txt_from_README_webviews() {
+  local list_of_readme_webview;  list_of_readme_webview=$1
+
+  for readme_path in $list_of_readme_webview; do
+    grep "^Name: " "$readme_path" || { echo "${readme_path} must have 'Name: '"; exit 1; }
+    grep "^URL: " "$readme_path" || { echo "${readme_path} must have 'URL: '"; exit 1; }
+    grep "^License File: " "$readme_path" || { echo "${readme_path} must have 'License File: '"; exit 1; }
+  done
+
+  local tmp_file
+  tmp_file=`mktemp tmp_third_party_notices_XXXXXX`
+
+  cat <<EOS >> "$tmp_file"
+Third-Party Software Notices
+
+flutter_linux_webview incorporates materials from third-party software as listed
+below.
+
+EOS
+
+  for readme_path in $list_of_readme_webview; do
+    local oss_name;  oss_name=$(grep "^Name: " "$readme_path" | sed -e 's/^Name: \(.*\)$/\1/')
+    local oss_url;  oss_url=$(grep "^URL: " "$readme_path" | sed -e 's/^URL: \(.*\)$/\1/')
+    local oss_license_relpath;  oss_license_relpath=$(grep "^License File: " "$readme_path" | sed -e 's/^License File: \(.*\)$/\1/')
+    local oss_license_abspath;  oss_license_abspath="$(dirname "$( realpath "$readme_path" )")/${oss_license_relpath}"
+
+    cat <<EOS >> "$tmp_file"
+--------------------------------------------------------------------------------
+
+${oss_name}
+${oss_url}
+
+$(cat "$oss_license_abspath")
+--------------------------------------------------------------------------------
+
+EOS
+  done
+
+  mv "$tmp_file" "./ThirdPartyNotices.txt"
+}
+
 ###
 ### Dart side third-party
 ###
@@ -178,9 +223,8 @@ src/tests/cefsimple/CMakeLists_subprocess_project.txt
 copy_directory_structure_and_create_symlinks_for_files "$param_src_root_dir"  "$param_files_to_link" "$param_dst_root_dir"
 
 
-###
-### Copy the example app and integration_test
-###
+# webview_flutter
+# * for the example app and the integration_test
 
 create_third_party_dir "example/lib/third_party"
 
@@ -194,3 +238,9 @@ example/integration_test/flutter_linux_webview_test.dart
 example/lib/main.dart
 "
 copy_directory_structure_and_create_symlinks_for_files "$param_src_root_dir"  "$param_files_to_link" "$param_dst_root_dir"
+
+generate_third_party_notices_txt_from_README_webviews "third_party_base/cef/README.webview
+third_party_base/flutter_engine/README.webview
+third_party_base/webview_flutter_android/README.webview
+third_party_base/webview_flutter/README.webview
+"

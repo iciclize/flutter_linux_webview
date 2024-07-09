@@ -537,4 +537,4 @@ However, currently, we are not accepting contributions, and we are unable to res
 
 flutter_linux_webview is licensed under the 3-Clause BSD License, see [LICENSE](./LICENSE).
 
-Portions of flutter_linux_webview include third-party software, each of which is licensed under its respective license. See [ThirdPartyNotices.txt](./ThirdPartyNotices.txt) for details.
+Portions of flutter_linux_webview include third-party software, each of which is licensed under its respective license. See [third_party_base/README.md](./third_party_base/README.md) for more information.

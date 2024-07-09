@@ -265,6 +265,7 @@ add_library(${PLUGIN_NAME} SHARED
   "flutter_webview_app.cc"
   "flutter_webview_controller.cc"
   "flutter_webview_handler.cc"
+  "third_party/cef/src/tests/cefclient/browser/flutter_webview_osr_renderer.cc"
   "flutter_webview_types.cc"
   "subprocess/src/flutter_webview_process_messages.cc"
 )

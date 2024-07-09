@@ -168,3 +168,21 @@ src/tests/cefclient/browser/flutter_webview_osr_renderer.h
 src/tests/cefsimple/CMakeLists_subprocess_project.txt
 "
 copy_directory_structure_and_create_symlinks_for_files "$param_src_root_dir"  "$param_files_to_link" "$param_dst_root_dir"
+
+
+###
+### Copy the example app and integration_test
+###
+
+create_third_party_dir "example/lib/third_party"
+
+param_src_root_dir="third_party_base/webview_flutter"
+param_dst_root_dir="example/lib/third_party/webview_flutter"
+param_files_to_link="README.webview
+LICENSE
+example/assets/www/index.html
+example/assets/www/styles/style.css
+example/integration_test/flutter_linux_webview_test.dart
+example/lib/main.dart
+"
+copy_directory_structure_and_create_symlinks_for_files "$param_src_root_dir"  "$param_files_to_link" "$param_dst_root_dir"

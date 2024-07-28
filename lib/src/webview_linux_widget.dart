@@ -733,14 +733,12 @@ class WebViewLinuxPlatformController extends WebViewPlatformController {
 
   final WebViewPlatformCallbacksHandler callbacksHandler;
   final JavascriptChannelRegistry javascriptChannelRegistry;
-  int? _webviewId;
 
   /// create a browser.
   Future<int?> _create(String? initialUrl, Color? backgroundColor,
       int initialWidth, int initialHeight) async {
     final int? webviewId = instanceManager.tryAddInstance(this);
     if (webviewId != null) {
-      _webviewId = webviewId;
       log.fine('createBrowser called. webviewId: $webviewId');
       final int? textureId = await (await LinuxWebViewPlugin.channel)
           .invokeMethod('createBrowser', <String, dynamic>{

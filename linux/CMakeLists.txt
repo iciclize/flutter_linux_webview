@@ -184,6 +184,7 @@ endif()
 
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${WEBVIEW_CEF_DISTRIB_NAME}")
   # Download the CEF binary distribution
+  message(STATUS "[flutter_linux_webview] Downloading the CEF binary distribution - ${WEBVIEW_CEF_DISTRIB_URL}")
   file(DOWNLOAD "${WEBVIEW_CEF_DISTRIB_URL}"
     "${CMAKE_CURRENT_SOURCE_DIR}/${WEBVIEW_CEF_DISTRIB_NAME}.tar.bz2"
     EXPECTED_HASH SHA1=${WEBVIEW_CEF_DISTRIB_HASH_SHA1}
@@ -206,7 +207,7 @@ function(patch_cef_distrib)
   message(STATUS "[flutter_linux_webview] Patching '${CMAKE_CURRENT_SOURCE_DIR}/${WEBVIEW_CEF_DISTRIB_NAME}/CMakeLists.txt' "
     "so that it builds flutter_webview_subprocess target.")
   execute_process(
-    COMMAND "patch" "-N"
+    COMMAND "patch" "--forward" "--backup"
     ${CMAKE_CURRENT_SOURCE_DIR}/${WEBVIEW_CEF_DISTRIB_NAME}/CMakeLists.txt
     ${webview_subprocess_source_dir}/cef_distrib_patch/build_flutter_webview_subprocess.patch)
 endfunction(patch_cef_distrib)

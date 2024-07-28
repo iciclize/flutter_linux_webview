@@ -1,25 +1,27 @@
-`flutter_linux_webview` incorporates materials from third-party software.
+(This file may be `flutter_linux_webview/third_party_base/README.md` itself,
+or a copy or symlink of it.)
 
-# `third_party/` directories
+# About `third_party/` directories in the repository
 
-Third-party source code is gathered under several directories named third_party/ in the repository.
+`flutter_linux_webview` incorporates third-party software materials.
 
-On the Git repository, each third-party file is a symlink to a file in //third_party_base/.
-In the case of the Pub package, those symlinks are converted to standard files, and //third_party_base/ will not exist.
+Third-party source code is organized under several directories named `third_party/` in the repository.
 
-# `//third_party_base/`
+If this package is a Git repository, each third-party file exists as a symlink to a file in the `//third_party_base/` directory.
+However, if this package is downloaded from Pub, these symlinks are converted to regular files, and the `//third_party_base/` directory does not exist.
 
-For plugin development, to avoid having third-party source code scattered all
-over the repository, we place them centrally under //third_party_base/.
 
-We create symlinks for third-party source files at the location where we use
-them. We do not directly reference //third_party_base/ from our source code.
+## `//third_party_base/`
 
-This is due to the following restrictions.
+To centralize third-party source code and prevent scattering throughout the repository, we store them under `//third_party_base/` for plugin development.
 
-* Dart source code cannot access directories outside of lib/ due to Dart restrictions.
-* Due to the restriction of Pub, packages with symlinks to directories cannot be uploaded. (symlinks to files are allowed, but they are converted to standard files on upload)
+When we need to use these third-party source files, we create symlinks at the respective locations. We do not directly reference `//third_party_base/` in our source code.
 
-For consistency, we do the same for native source code as well as Dart. (although files in //linux/ can directly access //third_party_base/ with CMake configuration) 
+This approach is necessary due to the following restrictions:
 
-The creation of symlinks is done by create_symlinks_to_third_party.sh.
+* Dart source code cannot access directories outside of lib/ due to Dart limitations.
+* Pub restricts the upload of packages with symlinks to directories (symlinks to files are allowed, but they are converted to regular files upon upload).
+
+For consistency, we apply the same approach to native source code as well as Dart code. (However, files in `//linux/` can directly access `//third_party_base/` with CMake configuration).
+
+The creation of symlinks is performed by the `//create_symlinks_to_third_party.sh` script.

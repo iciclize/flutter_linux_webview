@@ -6,7 +6,7 @@ License: BSD-3-Clause
 License File: src/LICENSE.txt
 
 Description:
-We use
-* type definitions to pass key input from Dart to the CEF side
-* the logic of off-screen rendering
-* CMakeLists.txt to build a subprocess executable
+We use the following components:
+- Type definitions for transferring key input from the Dart side to the CEF side.
+- Off-screen rendering logic.
+- The tests/cefsimple/CMakeLists.txt.in file for building the subprocess executable.
